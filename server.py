@@ -43,25 +43,70 @@ def fetch_bestbuy(query):
     except:
         return False
                 
-   
 
+def fetch_walmart(query):
+    try:
+        # Perform the search
+        url = f"https://www.walmart.com/search?q={query}"
+        response = requests.get(url, headers=headers)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        # Check if the page is valid and contains products
+        product = soup.find("div", class_="h-100 pb1-xl pr4-xl pv1 ph1")
+        if product is None:
+            return False 
+        else:
+            link_element = product.find("a", class_="absolute w-100 h-100 z-1 hide-sibling-opacity")
+            title_element = product.find("span", class_="w_iUH7")
+            price_elements = product.find("div", class_=("mr1 mr2-xl b black lh-copy f5 f4-l")).findChildren()
+            dollars = price_elements[2]
+            cents = price_elements[3]
+            if link_element and title_element and len(price_elements) >= 4:
+               link = link_element['href'] 
+               title = title_element.get_text(strip=True)
+               price = dollars.get_text(strip=True) + "." + cents.get_text(strip = True)
+               item = {
+                   'site': 'Walmart',
+                   'link': f"{link}",
+                   'item_title_name': title,
+                   'price': price
+               }
+        return item
+    except:
+        return False
+
+#def fetch_newegg(query):
+#    try:
+#        # Perform the search
+#        url = f"https://www.walmart.com/search?q={query}"
+#        response = requests.get(url, headers=headers)
+#        soup = BeautifulSoup(response.text, 'html.parser')
+#        # Check if the page is valid and contains products
+#        product = soup.find("div", class_="h-100 pb1-xl pr4-xl pv1 ph1")
+#        if product is None:
+#            return False 
+#        else:
+#            link_element = product.find("a", class_="absolute w-100 h-100 z-1 hide-sibling-opacity")
+#            title_element = product.find("span", class_="w_iUH7")
+#            price_elements = product.find("div", class_=("mr1 mr2-xl b black lh-copy f5 f4-l")).findChildren()
+#            dollars = price_elements[2]
+#            cents = price_elements[3]
+#            if link_element and title_element and len(price_elements) >= 4:
+#               link = link_element['href'] 
+#               title = title_element.get_text(strip=True)
+#               price = dollars.get_text(strip=True) + "." + cents.get_text(strip = True)
+#               item = {
+#                   'site': 'Walmart',
+#                   'link': f"{link}",
+#                   'item_title_name': title,
+#                   'price': price
+#               }
+#        return item
+#    except:
+#        return False
+#
+#
 product_name = input("Enter the product name: ")
-item = fetch_bestbuy(product_name)
-print(item)
-
-
-# def fetch_walmart(query):
-    # url = f"https://www.walmart.com/search/?query={query}"
-    # response = requests.get(url)
-    # soup = BeautifulSoup(response.text, 'html.parser')
-    # title = soup.find('a', class_='product_title_class').get_text(strip=True)
-    # price = soup.find('span', class_='price_class').get_text(strip=True)
-    # return Item('Walmart', title, price)
-# 
-# def fetch_newegg(query):
-    # url = f"https://www.newegg.com/p/pl?d={query}"
-    # response = requests.get(url)
-    # soup = BeautifulSoup(response.text, 'html.parser')
-    # title = soup.find('a', class_='item-title').get_text(strip=True)
-    # price = soup.find('li', class_='price-current').get_text(strip=True)
-    # return Item('Newegg', title, price)
+# item = fetch_bestbuy(product_name)
+# item = fetch_walmart(product_name)
+# item = fetch_newegg(product_name)
+# print(item)
