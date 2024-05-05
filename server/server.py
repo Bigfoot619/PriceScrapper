@@ -1,10 +1,12 @@
-from server.constants import USER_AGENTS 
-from server.bestbuy import fetch_bestbuy
-from server.newegg import fetch_newegg
-from server.walmart import fetch_walmart
+from constants import USER_AGENTS 
+from bestbuy import fetch_bestbuy
+from newegg import fetch_newegg
+from walmart import fetch_walmart
 from fastapi import FastAPI
 
 app = FastAPI()
+
+print("Server Running..")
 
 unused_agents = USER_AGENTS.copy()
 i = 0
@@ -26,7 +28,6 @@ def getItems(item):
         items.append(fetch_walmart(item, getAgent()))
         #BestBuy
         items.append(fetch_bestbuy(item, getAgent()))
-       
         #Newegg
         items.append(fetch_newegg(item, getAgent()))
         

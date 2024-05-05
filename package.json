@@ -1,0 +1,10 @@
+{
+  "name": "pricescrapper",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
+    "server": "cd server && uvicorn server:app --reload",
+    "client": "cd client && npm run dev"
+  }
+}
