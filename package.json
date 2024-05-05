@@ -6,5 +6,9 @@
     "start": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
     "server": "cd server && uvicorn server:app --reload",
     "client": "cd client && npm run dev"
+  },
+  "dependencies": {
+    "axios": "^1.6.8",
+    "react-hook-form": "^7.51.4"
   }
 }
