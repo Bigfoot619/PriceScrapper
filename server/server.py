@@ -3,15 +3,25 @@ from bestbuy import fetch_bestbuy
 from newegg import fetch_newegg
 from walmart import fetch_walmart
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
 
-print("Server Running..")
+origin = ["http://localhost:3000"]
+
+# Apply CORS middleware configuration
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origin,  # You can also use ["*"] to allow all domains
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
 
 unused_agents = USER_AGENTS.copy()
 i = 0
 headers = {}
-items = []
 
 def getAgent():
     global i
@@ -23,9 +33,10 @@ def getAgent():
 
 @app.get("/")
 def getItems(item):
+    items = []
     try:
         #Walmart
-        items.append(fetch_walmart(item, getAgent()))
+        #items.append(fetch_walmart(item, getAgent()))
         #BestBuy
         items.append(fetch_bestbuy(item, getAgent()))
         #Newegg

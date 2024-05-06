@@ -3,16 +3,22 @@
 import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState } from 'react';
+import DisplayProduct from './displayProduct';
 
 const Home = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [responseMessage, setResponseMessage] = useState('');
+  const [products, setProducts] = useState([]);
 
   const onSubmit = async (data) => {
     try {
-      const response = await axios.get(`http://localhost:8000/?item=${data}`);
-      setResponseMessage("Searching for product: " + response.data);
+      setProducts([]);
+      const response = await axios.get(`http://127.0.0.1:8000/?item=${data.product}`);
+      setResponseMessage("Searching: " + data.product + "...");
+      setProducts(response.data[0]);
+      setResponseMessage("Your product details:")
     } catch (err) {
+      setProducts([]);
       setResponseMessage("This product does not exist. Try again!");
     }
   };
@@ -30,6 +36,7 @@ const Home = () => {
           </p>
         </form>
         {responseMessage && <p className="responseMessage">{responseMessage}</p>}
+        <DisplayProduct products={products} />
       </div>
     </>
   );
