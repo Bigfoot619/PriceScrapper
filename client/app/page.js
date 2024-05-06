@@ -4,6 +4,7 @@ import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import { useState } from 'react';
 import DisplayProduct from './displayProduct';
+import './page.css'
 
 const Home = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -12,9 +13,9 @@ const Home = () => {
 
   const onSubmit = async (data) => {
     try {
+      setResponseMessage("Searching " + data.product + "...");
       setProducts([]);
       const response = await axios.get(`http://127.0.0.1:8000/?item=${data.product}`);
-      setResponseMessage("Searching: " + data.product + "...");
       setProducts(response.data[0]);
       setResponseMessage("Your product details:")
     } catch (err) {

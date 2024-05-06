@@ -1,24 +1,40 @@
-.productTable table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-  }
-  
-  .productTable th, .productTable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .productTable th {
-    background-color: #f2f2f2;
-  }
-  
-  .productTable a {
-    color: blue;
-    text-decoration: none;
-  }
-  .productTable a:hover {
-    text-decoration: underline;
-  }
-  
+.productTable {
+  margin-top: 20px;
+  border-collapse: collapse;
+  width: 90%; /* Adjust width as needed */
+  max-width: 600px;
+}
+
+table {
+  margin: auto; /* Center table on page */
+  background-color: #f2f2f2;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th, td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+td {
+  color: blue;
+}
+th {
+  background-color: #04AA6D;
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+a {
+  color: #2575fc;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}

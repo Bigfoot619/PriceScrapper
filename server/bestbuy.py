@@ -19,7 +19,7 @@ def fetch_bestbuy(query, agent):
             if link_element and title_element and price_element:
                 link = link_element['href'] 
                 title = title_element.get_text(strip=True)
-                price = price_element.get_text(strip=True)
+                price = price_element.get_text(strip=True).replace('$', '')
                 item = {
                     'site': 'BestBuy',
                     'link': f"https://www.bestbuy.com{link}&intl=nosplash",

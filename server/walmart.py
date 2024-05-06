@@ -1,33 +1,40 @@
-import requests
-from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+
+
+def setup_driver(agent):
+    """Configures and returns a Selenium WebDriver."""
+    options = Options()
+    options.add_argument("--headless")  # Runs Chrome in headless mode.
+    options.add_argument("--incognito")  # Opens Chrome in incognito mode.
+    options.add_argument(f'user-agent={agent}')  # Sets a random user agent.
+    driver = webdriver.Chrome(options=options)
+    return driver
 
 def fetch_walmart(query, agent):
     try:
+        driver = setup_driver(agent)
         # Perform the search
         url = f"https://www.walmart.com/search?q={query}"
-        response = requests.get(url, headers={'User-Agent': agent})
-        soup = BeautifulSoup(response.text, 'html.parser')
-        
+        driver.get(url)
+        print(driver.page_source)
+        # WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, '[data-automation-id="product-title"]')))
         # Check if the page is valid and contains products
-        product = soup.find("div", class_="h-100 pb1-xl pr4-xl pv1 ph1")
-        if product is None:
-            return False 
-        else:
-            link_element = product.find("a", class_="absolute w-100 h-100 z-1 hide-sibling-opacity")
-            title_element = product.find("span", class_="w_iUH7")
-            price_elements = product.find("div", class_=("mr1 mr2-xl b black lh-copy f5 f4-l")).findChildren()
-            dollars = price_elements[2]
-            cents = price_elements[3]
-            if link_element and title_element and len(price_elements) >= 4:
-               link = link_element['href'] 
-               title = title_element.get_text(strip=True)
-               price = dollars.get_text(strip=True) + "." + cents.get_text(strip = True)
-               item = {
-                   'site': 'Walmart',
-                   'link': f"{link}",
-                   'item_title_name': title,
-                   'price': price
-               }
+        product_element = driver.find_element(By.CSS_SELECTOR, '[data-automation-id="product-title"]')
+        price_element = driver.find_element(By.CSS_SELECTOR, '[data-automation-id="product-price"]')
+        item = {
+            'site': 'Walmart',
+            'link': driver.current_url,
+            'item_title_name': product_element.text,
+            'price': price_element.text
+        }
         return item
-    except:
-        return False
+    except Exception as e:
+        print(f"Error fetching from Walmart: {e}")
+    finally:
+        driver.quit()
+    return False

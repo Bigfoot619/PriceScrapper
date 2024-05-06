@@ -5,7 +5,6 @@ from walmart import fetch_walmart
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
-
 app = FastAPI()
 
 origin = ["http://localhost:3000"]
@@ -13,7 +12,7 @@ origin = ["http://localhost:3000"]
 # Apply CORS middleware configuration
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origin,  # You can also use ["*"] to allow all domains
+    allow_origins=origin,
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
