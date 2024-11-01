@@ -1,7 +1,6 @@
 from constants import USER_AGENTS 
 from bestbuy import fetch_bestbuy
 from newegg import fetch_newegg
-from walmart import fetch_walmart
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -34,8 +33,6 @@ def getAgent():
 def getItems(item):
     items = []
     try:
-        #Walmart
-        #items.append(fetch_walmart(item, getAgent()))
         #BestBuy
         items.append(fetch_bestbuy(item, getAgent()))
         #Newegg
